@@ -1,0 +1,21 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@types/node": "^18",
+    "nuxt": "^3.4.3"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.3",
+    "leaflet-geometryutil": "^0.10.2",
+    "nuxt-swiper": "^1.1.0",
+    "vue-yandex-maps": "^1.1.0"
+  }
+}
