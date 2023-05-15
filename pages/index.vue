@@ -258,7 +258,7 @@
                 <button>РАССЧИТАТЬ СТОИМОСТЬ</button>
             </div>
         </div>
-
+        <a name="faq"></a>
         <div class="faq d-flex justify-content-between align-items-end">
             <div class="faqimg">
                 <img src="@/assets/img/faqchel.png" class="fat img-fluid" alt="">

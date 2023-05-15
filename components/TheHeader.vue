@@ -1,9 +1,9 @@
 <template>
     <header>
         <div class="pc__header d-flex align-items-center justify-content-between">
-            <NuxtLink to="/">
+            <a href="/">
                 <img src="@/assets/img/headerlogo.svg" alt="">
-            </NuxtLink>
+            </a>
 
             <div>
                 <a href="/#order">ЗАКАЗ КУРЬЕРА</a>
