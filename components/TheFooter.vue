@@ -3,7 +3,7 @@
         <div class="footer__body">
             <div class="d-flex justify-content-center align-items-center">
                 <img src="@/assets/img/footerlogo.svg" class="img-fluid" alt="">
-                <a href="/#orders">ЗАКАЗ КУРЬЕРА</a>
+                <a href="/#order">ЗАКАЗ КУРЬЕРА</a>
                 <a href="/#faq">FAQ</a>
                 <NuxtLink to="polytics">ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</NuxtLink>
                 <NuxtLink to="terms">ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ</NuxtLink>
