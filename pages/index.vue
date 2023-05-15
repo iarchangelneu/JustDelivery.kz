@@ -4,88 +4,63 @@
             <div class="main__body">
 
 
-                <img src="@/assets/img/mainlogo.png" alt="" class="img-fluid">
+                <img src="@/assets/img/mainlogo.png" alt="" class="img-fluid pcmain">
+                <img src="@/assets/img/mobmain.png" class="img-fluid mobmain" alt="">
 
                 <div class="d-flex justify-content-end">
                     <button>РАСЧИТАТЬ СТОИМОСТЬ</button>
                 </div>
             </div>
         </div>
-
+        <a name='order'></a>
         <div class="order">
+            <h2 class="mobmap">Введите ваш адрес и адрес доставки, либо поставьте точки на карте</h2>
             <div class="order__body d-flex">
+                <client-only>
+                    <TheMap @distance="onDistanceUpdate" @adress1="adress1Update" @adress2="adress2Update"></TheMap>
 
-                <!-- <img src="@/assets/img/map.png" class="img-fluid" alt=""> -->
-                <!-- <YandexMap map-type="hybrid" :coordinates="[32, 50]">
+                </client-only>
 
-                </YandexMap> -->
 
-                <component :is="comp" :coordinates="[32, 50]" :settings="settings">
-
-                </component>
 
 
                 <div class="order__details pl-4" style="z-index: 999">
 
-                    <h2>Введите ваш адрес и адрес доставки, либо поставьте точки на карте</h2>
-
-                    <div>
-                        <label for="from_adres" class="mt-3">Откуда забрать</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><img src="@/assets/img/searchinp.svg"
-                                        alt=""></span>
-                            </div>
-                            <input type="text" class="form-control" id="from_adres" placeholder="Введите адрес"
-                                aria-label="Введите адрес" aria-describedby="basic-addon1">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label for="to_adres" class="mt-2">Куда доставить</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><img src="@/assets/img/searchinp.svg"
-                                        alt=""></span>
-                            </div>
-                            <input type="text" class="form-control" id="to_adres" placeholder="Введите адрес"
-                                aria-label="Введите адрес" aria-describedby="basic-addon1">
-                        </div>
-                    </div>
-
+                    <h2 class="pcmap">Введите ваш адрес и адрес доставки, либо поставьте точки на карте</h2>
                     <div class="form-group">
                         <label for="orderType" class="mt-2">Выберите тип доставки</label>
                         <select class="form-control" id="orderType" v-model="orderType">
                             <option disabled value="">Тип доставки</option>
-                            <option>Документы</option>
-                            <option>Вещи (до 2 кг)</option>
-                            <option>Вещи (2–10 кг)</option>
-                            <option>Крупногабаритный груз</option>
+                            <option value="Документы">Документы</option>
+                            <option value="Документы">Вещи (до 2 кг)</option>
+                            <option value="Документы">Вещи (2–10 кг)</option>
+                            <option value="Крупногабаритный груз">Крупногабаритный груз</option>
                         </select>
                     </div>
-                    <h2 class="mt-4">Введите примерный вес и габариты</h2>
+
 
                     <div class="gabarites mt-3" v-if="orderType == 'Крупногабаритный груз'">
+                        <h2 class="mt-4">Введите примерный вес и габариты</h2>
 
                         <div class="d-flex align-items-end">
-                            <input type="number" name="weight" id="weight" placeholder="Вес груза">
+                            <input type="number" name="weight" v-model="weight" id="weight" placeholder="Вес груза">
                             <label for="weight" class="mb-0 pl-1">кг</label>
                         </div>
 
                         <div class="d-flex align-items-center mt-3">
 
                             <div class="d-flex align-items-end">
-                                <input type="number" name="dlina" id="dlina" placeholder="Длина">
+                                <input type="number" v-model="dlina" name="dlina" id="dlina" placeholder="Длина">
                                 <label for="dlina" class="mb-0 pl-1">м</label>
                             </div>
                             <span>Х</span>
                             <div class="d-flex align-items-end">
-                                <input type="number" name="shirina" id="shirina" placeholder="Ширина">
+                                <input type="number" v-model="shirina" name="shirina" id="shirina" placeholder="Ширина">
                                 <label for="shirina" class="mb-0 pl-1">м</label>
                             </div>
                             <span>Х</span>
                             <div class="d-flex align-items-end">
-                                <input type="number" name="visota" id="visota" placeholder="Высота">
+                                <input type="number" v-model="visota" name="visota" id="visota" placeholder="Высота">
                                 <label for="visota" class="mb-0 pl-1">м</label>
                             </div>
 
@@ -102,11 +77,12 @@
 
             <div class="order__total d-flex justify-content-center mt-5">
                 <div>
-                    <h2 class="mb-4">Стоимость заказа: 1880 ₸</h2>
-                    <h2>Примерное время доставки: ~30 минут</h2>
+                    <h2 class="mb-4">Стоимость заказа: {{ price + " ₸" }}</h2>
+                    <h2>Примерное время доставки: ~30 минут
+                    </h2>
 
                     <div class="text-center mt-5">
-                        <button>ПОДТВЕРДИТЬ ЗАКАЗ</button>
+                        <button @click="getPrice()">РАСЧИТАТЬ СТОИМОСТЬ</button>
                     </div>
 
                 </div>
@@ -148,7 +124,7 @@
         </div>
 
         <div class="sliders">
-            <Swiper :height="300" :modules="[SwiperAutoplay]" :slides-per-view="4" :loop="true" :autoplay="{
+            <Swiper :height="300" :modules="[Autoplay]" :slides-per-view="4" :loop="true" :autoplay="{
                 delay: 1,
                 disableOnInteraction: false,
             }" :speed='4000' ,>
@@ -181,6 +157,9 @@
 
             </Swiper>
             <div class="text-container">ПРОСТО ДОСТАВЛЯЕМ</div>
+        </div>
+        <div class="mobsliders">
+            <img src="@/assets/img/mobsliders.png" class="img-fluid" alt="">
         </div>
 
 
@@ -242,7 +221,39 @@
                     </div>
                 </div>
             </div>
+            <div class="waytoway__mob">
 
+                <div class="wayto__item">
+                    <h2>1. расчёт стоимости</h2>
+                    <p>Определите, сколько будет стоить доставка, учитывая размер и вес посылки, а также дальность доставки
+                    </p>
+                </div>
+
+                <div class="wayto__item">
+                    <h2>2. оплата заказа</h2>
+                    <p>Оплатите стоимость доставки с помощью банковской карты
+                    </p>
+                </div>
+
+                <div class="wayto__item">
+                    <h2>3. курьер приехал</h2>
+                    <p>Курьер приедет в указанное место и, при необходимости, свяжется с отправителем, чтобы забрать посылку
+                    </p>
+                </div>
+
+                <div class="wayto__item">
+                    <h2>4. перевозка груза</h2>
+                    <p>Курьер доставляет посылку на указанный адрес и может связываться с получателем для уточнения деталей.
+                    </p>
+                </div>
+
+                <div class="wayto__item">
+                    <h2>5. получите посылку</h2>
+                    <p>Курьер приедет в место доставки и передаст посылку получателю
+                    </p>
+                </div>
+
+            </div>
             <div class="text-center">
                 <button>РАССЧИТАТЬ СТОИМОСТЬ</button>
             </div>
@@ -250,7 +261,7 @@
 
         <div class="faq d-flex justify-content-between align-items-end">
             <div class="faqimg">
-                <img src="@/assets/img/faqchel.png" alt="">
+                <img src="@/assets/img/faqchel.png" class="fat img-fluid" alt="">
             </div>
             <div class="faqright w-100">
                 <div class="text-right">
@@ -344,18 +355,32 @@
 
     </section>
 </template>
+
 <script>
+
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Autoplay } from 'swiper';
+import 'swiper/css';
 export default {
+
     data() {
         return {
-
-            orderType: 'Тип доставки',
+            distance: null,
+            price: '',
+            orderType: '',
+            weight: null,
+            shirina: null,
+            visota: null,
+            dlina: null,
+            adress1: '',
+            adress2: ''
         }
     },
     components: {
-        YandexMap, YandexMarker,
+        Swiper,
+        SwiperSlide,
     },
-    mounted() {
+    async mounted() {
         for (let i = 0; i < 5; i++) {
             $(`#collapse${i}`).on("show.bs.collapse", function () {
                 document.querySelector(`#faqbtn${i}`).classList.add('buttonActive')
@@ -364,37 +389,141 @@ export default {
                 document.querySelector(`#faqbtn${i}`).classList.remove('buttonActive')
             });
         }
-    }
+
+        setTimeout(() => {
+            this.showMap = true;
+        }, 50);
+    },
+
+    methods: {
+        onDistanceUpdate(newDistance) {
+            this.distance = newDistance;
+        },
+        adress1Update(newAdress1) {
+            this.adress1 = newAdress1
+        },
+        adress2Update(newAdress2) {
+            this.adress2 = newAdress2
+        },
+        getPrice() {
+
+            if (this.distance) {
+                const distance = Math.floor(this.distance.value)
+                const weight = this.weight
+                const shirina = this.shirina
+                const visota = this.visota
+                const dlina = this.dlina
+
+                let volume = shirina * visota * dlina
+
+                /// Цены
+                const perMeter = 1
+                const perKg = 200
+                const perMetrCube = 20000
+                const min = 3000
+
+
+                if (this.orderType === 'Крупногабаритный груз') {
+
+                    if (this.weight
+                        && this.shirina
+                        && this.visota
+                        && this.dlina) {
+
+                        let price = distance * perMeter + volume * perMetrCube + weight * perKg + min
+
+                        this.price = price
+
+                    }
+                    else {
+                        alert('Введите габариты и вес посылки')
+                    }
+                }
+
+
+                if (this.orderType === 'Документы') {
+
+                    let price = distance * perMeter + min
+
+                    this.price = price
+
+
+                }
+            }
+            else {
+                alert('Постройте маршрут')
+            }
+
+        },
+
+    },
+
+    setup() {
+        return {
+            modules: [Autoplay],
+        };
+    },
+
 }
 </script>
 <script setup>
-import { YandexMap, YandexMarker } from 'vue-yandex-maps'
+
 useSeoMeta({
     title: 'JustDelivery | Главная',
     ogTitle: 'JustDelivery | Главная',
     description: 'Просто доставляем',
     ogDescription: 'Просто доставляем',
 })
-const comp = shallowRef(null)
 
-const settings = [
-    {
-        innerWidth: 100,
-    }
-]
 
-onMounted(async () => {
-    comp.value = YandexMap
-})
+const coordinates = [55, 33];
+const controls = ['fullscreenControl'];
+const detailedControls = { zoomControl: { position: { right: 10, top: 50 } } };
 </script>
 
 <style scoped>
-.ymaps-2-1-79-map,
-.ymaps-2-1-79-map ymaps,
-.ymaps-2-1-79-map ymaps:before,
-.ymaps-2-1-79-map ymaps:after {
-    width: 740px;
-    height: 678px;
+.mobsliders {
+    display: none;
+}
+
+.mobmap {
+    display: none;
+}
+
+.mobmain {
+    display: none;
+}
+
+.waytoway__mob {
+    display: none;
+}
+
+.wayto__item {
+    border: 3px solid #000000;
+    padding: 20px 15px;
+    margin-bottom: 10px;
+}
+
+.wayto__item h2 {
+    font-family: var(--tab);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 110%;
+    color: #000;
+}
+
+.wayto__item p {
+    font-family: var(--jur);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 130%;
+    color: #000;
+}
+
+.error {
+    border-color: red !important;
 }
 
 .buttonActive {
@@ -762,5 +891,423 @@ input::-webkit-inner-spin-button {
 .main__body button:hover {
     border: 3px solid #000;
     background: #000;
+}
+
+@media (max-width: 1450px) {
+    .main {
+        padding: 8vw 150px;
+    }
+
+    .order {
+        padding: 3.75vw 150px;
+    }
+
+    .plusiall {
+        padding: 3.927vw 150px;
+    }
+
+    .plusitext {
+        padding: 0 120px 3.646vw 120px;
+    }
+
+    .text-container {
+        font-size: 80px;
+    }
+
+    .ride {
+        padding: 5vw 150px 5vw 150px;
+    }
+
+    .waytoway {
+        padding: 0 150px 5vw;
+    }
+
+    .faq {
+        padding: 0 150px;
+    }
+}
+
+@media (max-width: 1400px) {
+    .main {
+        padding: 8vw 60px;
+        display: flex;
+        align-items: center;
+    }
+
+    .order {
+        padding: 3.75vw 60px;
+    }
+
+    .plusiall {
+        padding: 3.927vw 60px;
+    }
+
+    .plusi h1 {
+        font-size: 30px;
+    }
+
+    .sliders img {
+        height: 345px;
+    }
+
+    .ride {
+        padding: 5vw 40px 10vw 50px;
+    }
+
+    .waytoway {
+        padding: 0 60px 5vw;
+    }
+
+    .faq {
+        padding: 0 60px;
+    }
+}
+
+@media (max-width: 1180px) {
+    .order {
+        padding: 3.75vw 30px;
+    }
+
+    .order__total button {
+        font-size: 30px;
+    }
+
+    .plusiall {
+        padding: 3.927vw 30px;
+    }
+
+    .plusitext {
+        padding: 0 25px 3.646vw 40px;
+    }
+
+    .ride {
+        padding: 5vw 30px 10vw 0px;
+    }
+
+    .ride h1 {
+        font-size: 50px;
+    }
+
+    .ride__right p {
+        font-size: 18px;
+    }
+
+    .waytoway {
+        padding: 0 30px 5vw;
+    }
+
+    .waytoway__body h1 {
+        font-size: 27px;
+    }
+
+    .waytoway__body p {
+        font-size: 18px;
+    }
+
+    .waytoway button {
+        font-size: 30px;
+    }
+
+    .faq {
+        padding: 0 30px;
+    }
+
+    .faqright h1 {
+        font-size: 50px;
+    }
+
+    .faqblock a {
+        font-size: 18px;
+    }
+
+    .card {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 1023px) {
+    .order__body {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .order__total h2 {
+        font-size: 26px;
+    }
+
+    .order__details {
+        padding-left: 0 !important;
+    }
+
+    .order__total {
+        justify-content: left !important;
+    }
+
+    .order__details {
+        margin-top: 50px;
+    }
+
+    .plusi img {
+        display: none;
+    }
+
+    .plusi h1 {
+        font-size: 26px;
+        margin-bottom: 20px !important;
+        text-align: center;
+    }
+
+    .plusitext {
+        flex-direction: column;
+    }
+
+    .plusitext div {
+        max-width: 100% !important;
+        text-align: left !important;
+        margin-bottom: 20px;
+    }
+
+    .plusi h2 {
+        margin-bottom: 10px;
+        color: #167EE7;
+    }
+
+    .text-container {
+        font-size: 60px;
+    }
+
+    .sliders img {
+        height: 250px;
+    }
+
+    .ride img {
+        display: none;
+    }
+
+    .ride__right div {
+        text-align: left !important;
+    }
+
+    .waytoway__body {
+        display: none;
+    }
+
+    .waytoway__mob {
+        display: block;
+    }
+
+    .ride {
+        padding: 5vw 30px 5vw 0px;
+    }
+
+    .waytoway button {
+        margin-top: 20px;
+    }
+
+    .faq .fat {
+        display: none;
+    }
+
+    .faqright div {
+        text-align: left !important;
+    }
+
+    .faqitem {
+        margin-bottom: 15px;
+    }
+
+    .faqblock {
+        margin-left: 0 !important;
+        margin-top: 20px !important;
+    }
+
+}
+
+@media (max-width: 768px) {
+    .mobmain {
+        display: block;
+    }
+
+    .pcmain {
+        display: none;
+    }
+
+    .main__body div {
+        justify-content: left !important;
+    }
+
+    .main__body button {
+        border: 2px solid #fff;
+        width: 100%;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 24px;
+        line-height: 106%;
+        padding: 11px 21px;
+    }
+
+    .main {
+        padding: 0 30px;
+        display: flex;
+        align-items: center;
+    }
+
+    .mobmap {
+        display: block;
+        font-family: var(--jur);
+        font-style: normal;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 130%;
+        color: #000;
+        padding-left: 10px;
+    }
+
+    .pcmap {
+        display: none;
+    }
+
+    .order {
+        padding: 20px 0px 0px;
+    }
+
+    .order__details {
+        margin-top: 0;
+        padding: 20px 10px !important;
+    }
+
+    .order__total {
+        padding: 0 10px;
+        margin-top: 0 !important;
+    }
+
+    .order__details label {
+        font-size: 16px;
+    }
+
+    .order__details h2 {
+        font-size: 16px;
+    }
+
+    .order__details .gabarites input {
+        max-width: 105px;
+        font-size: 16px;
+    }
+
+    .gabarites label {
+        display: none;
+    }
+
+    .gabarites span {
+        padding: 0 7px;
+        font-size: 20px;
+    }
+
+    .order input::placeholder {
+        font-size: 16px;
+    }
+
+    .order__total h2 {
+        font-size: 20px;
+    }
+
+    .order__total div div {
+        padding: 0 12px;
+        margin-top: 30px !important;
+    }
+
+    .order__total button {
+        font-size: 24px;
+        padding: 11px;
+        width: 100%;
+        border: 2px solid #000;
+    }
+
+    .plusi {
+        padding: 40px 10px 30px;
+    }
+
+    .plusiall {
+        padding: 0 !important;
+    }
+
+    .plusi h1 {
+        font-size: 20px;
+        margin-bottom: 30px !important;
+    }
+
+    .plusi h2 {
+        font-size: 24px;
+    }
+
+    .plusi span {
+        font-size: 16px;
+    }
+
+    .plusitext {
+        padding: 0 10px;
+    }
+
+    .sliders {
+        display: none;
+    }
+
+    .mobsliders {
+        display: block;
+    }
+
+    .ride {
+        padding: 30px 10px;
+    }
+
+    .ride__right {
+        margin-left: 0;
+    }
+
+    .ride h1 {
+        font-size: 24px;
+    }
+
+    .ride__right p {
+        font-size: 16px;
+    }
+
+    .waytoway {
+        padding: 0 10px;
+    }
+
+    .wayto__item p {
+        font-size: 15px;
+    }
+
+    .waytoway button {
+        font-weight: 700;
+        font-size: 24px;
+        padding: 11px 0;
+        width: 100%;
+        border: 2px solid #000;
+    }
+
+    .waytoway .text-center {
+        padding: 0 14px;
+    }
+
+    .faq {
+        padding: 30px 10px 0;
+    }
+
+    .faqright h1 {
+        font-size: 24px;
+
+    }
+
+    .faqblock a {
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .faqblock {
+        margin-left: 10px !important;
+    }
 }
 </style>

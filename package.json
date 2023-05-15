@@ -13,9 +13,8 @@
     "nuxt": "^3.4.3"
   },
   "dependencies": {
-    "leaflet": "^1.9.3",
-    "leaflet-geometryutil": "^0.10.2",
-    "nuxt-swiper": "^1.1.0",
+    "ol": "^7.3.0",
+    "swiper": "^9.3.1",
     "vue-yandex-maps": "^1.1.0"
   }
 }

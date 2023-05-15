@@ -23,13 +23,7 @@
   src: local('Tablon'), url('@/assets/fonts/Tablon-Medium.ttf')
 }
 
-.ymaps-2-1-79-map,
-.ymaps-2-1-79-map ymaps,
-.ymaps-2-1-79-map ymaps:before,
-.ymaps-2-1-79-map ymaps:after {
-  width: 740px !important;
-  height: 678px !important;
-}
+
 
 :root {
   --jur: 'Jura', sans-serif;
@@ -38,5 +32,6 @@
 
 body {
   margin: 0;
+  overflow-x: hidden;
 }
 </style>

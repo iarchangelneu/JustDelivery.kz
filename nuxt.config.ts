@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['nuxt-swiper'],
+  modules: [],
     pages: true,
     app: {
         head: {
@@ -12,7 +12,9 @@ export default defineNuxtConfig({
               href: 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css',
               integrity : 'sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N',
               crossorigin: 'anonymous'
-            }
+            },
+            
+           
           ],
           script:[
             {
@@ -21,7 +23,11 @@ export default defineNuxtConfig({
             {
               src: 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js'
             },
-           
+            // {
+            //   src: 'https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=e1123dd2-7120-43ba-a123-575d432f9366'
+            // },
+          
+                     
           ]
         }
       }
