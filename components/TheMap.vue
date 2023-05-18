@@ -152,9 +152,9 @@ export default {
                     });
 
                 axios
-                    .post(path, { address_from: this.adressA, address_to: this.adressB, delivery_type: this.orderType, comment: this.comment, cost: this.price, delivery_time: 30 })
+                    .post(order, { address_from: this.adressA, address_to: this.adressB, delivery_type: this.orderType, comment: this.comment, cost: this.price, delivery_time: 30 })
 
-                    .then((res) => {
+                    .then((result) => {
 
                     })
                     .catch((error) => {
