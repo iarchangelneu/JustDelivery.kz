@@ -138,7 +138,7 @@ export default {
             const path = "https://justdelivery.kz/api/vision_pay";
             if (this.price != '') {
                 axios
-                    .post(path, { cost: this.price, jwt_token: this.token })
+                    .post(path, { cost: this.price, jwt_token: token })
 
                     .then((res) => {
 
