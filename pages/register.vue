@@ -12,35 +12,34 @@
                 <div class="form-group">
 
                     <label for="name">Ваше Имя</label>
-                    <input type="text" class="form-control" id="name" placeholder="Введите имя" required>
+                    <input v-model="name" type="text" class="form-control" id="name" placeholder="Введите имя" required>
 
                 </div>
 
                 <div class="form-group">
 
                     <label for="email">Ваш email</label>
-                    <input type="text" class="form-control" id="email" placeholder="Введите адрес электронной почты"
-                        required>
-
+                    <input v-model="email" type="email" class="form-control" id="email"
+                        placeholder="Введите адрес электронной почты" required>
                 </div>
 
                 <div class="form-group">
 
                     <label for="password">Ваш пароль</label>
-                    <input type="text" class="form-control" id="password" placeholder="Введите пароль (минимум 6 символов)"
-                        required>
+                    <input v-model="password" type="password" class="form-control" id="password"
+                        placeholder="Введите пароль (минимум 6 символов)" required>
 
                 </div>
 
                 <div class="form-group">
 
                     <label for="repeat__password">Повторите пароль</label>
-                    <input type="text" class="form-control" id="repeat__password" placeholder="Введите пароль ещё раз"
-                        required>
+                    <input v-model="repeatPassword" type="password" class="form-control" id="repeat__password"
+                        placeholder="Введите пароль ещё раз" required>
 
                 </div>
                 <div class="text-center">
-                    <button type="button">ЗАРЕГИСТРИРОВАТЬСЯ</button>
+                    <button type="button" @click="register()">ЗАРЕГИСТРИРОВАТЬСЯ</button>
                 </div>
             </div>
             <div class="d-flex align-items-start">
@@ -49,6 +48,56 @@
         </div>
     </div>
 </template>
+<script>
+import axios from 'axios'
+export default {
+    data() {
+        return {
+            name: '',
+            email: '',
+            password: '',
+            repeatPassword: '',
+        }
+    },
+    methods: {
+        register() {
+            const path = "https://justdelivery.kz/api/register";
+            if (this.name != '' && this.email != '' && this.password != '') {
+                if (this.password == this.repeatPassword) {
+                    axios
+                        .post(path, { email: this.email, password: this.password, name: this.name })
+                        .then((res) => {
+
+                            if (res.status == 201) {
+                                console.log(res);
+                                window.location.href = '/login'
+                            }
+                            else {
+
+                                alert("Произошла ошибка")
+                                console.log(res)
+                            }
+
+
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                        });
+                }
+                else {
+                    alert('Пароли не совпадают')
+                }
+            }
+            else {
+                alert('Заполните все поля')
+            }
+        }
+
+
+
+    }
+}
+</script>
 <script setup>
 useSeoMeta({
     title: 'JustDelivery | Регистрация',

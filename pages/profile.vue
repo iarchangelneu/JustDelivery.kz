@@ -1,5 +1,5 @@
 <template>
-    <div class="profile">
+    <div class="profile" v-if="isAuth == 'true'">
         <div class="text-center">
             <h1>личный кабинет</h1>
         </div>
@@ -247,7 +247,9 @@
     </div>
 </template>
 <script>
+import global from '~/mixins/global';
 export default {
+    mixins: [global],
     data() {
         return {
             block1Visible: true,
@@ -272,6 +274,11 @@ export default {
         },
     },
     mounted() {
+        if (this.isAuth == 'false') {
+            window.location.href = '/register'
+        }
+
+
         for (let i = 0; i < 2; i++) {
             $(`#collapse${i}`).on("show.bs.collapse", function () {
                 document.querySelector(`#faqbtn${i}`).classList.add('buttonActive')

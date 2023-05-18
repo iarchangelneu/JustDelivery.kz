@@ -12,13 +12,13 @@
                 </NuxtLink>
             </div>
 
-            <div class="dropdown" v-if="logOn">
+            <div class="dropdown" v-if="isAuth == 'true'">
                 <button class="dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-                    Александр Иванов
+                    {{ userName }}
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Личный кабинет</a>
-                    <a class="dropdown-item" href="#">Выход</a>
+                    <a class="dropdown-item" href="/profile">Личный кабинет</a>
+                    <a class="dropdown-item" @click="logOut()">Выход</a>
                 </div>
             </div>
 
@@ -46,14 +46,14 @@
                     <ul class="menu__box">
 
                         <div class="">
-                            <div class="menu__links">
+                            <div class="menu__links" v-if="isAuth == 'true'">
                                 <NuxtLink to="/login">ВОЙТИ</NuxtLink>
                                 <NuxtLink to="/register">РЕГИСТРАЦИЯ</NuxtLink>
                             </div>
-                            <div class="menu__links d-none">
-                                <h1>Александр Иванов</h1>
+                            <div class="menu__links" v-else>
+                                <h1>{{ userName }}</h1>
                                 <NuxtLink to="/profile" style="font-size: 16px;">Личный кабинет</NuxtLink>
-                                <a href="#" class="mt-3" style="font-size: 16px;">Выйти</a>
+                                <a @click="logOut()" class="mt-3" style="font-size: 16px;">Выйти</a>
                             </div>
                         </div>
                         <div class="menu__contacts">
@@ -69,10 +69,18 @@
     </header>
 </template>
 <script>
+import global from '~/mixins/global';
 export default {
+    mixins: [global],
     data() {
         return {
-            logOn: false,
+
+        }
+    },
+    methods: {
+        logOut() {
+            localStorage.setItem('isLogin', false)
+            window.location.href = '/'
         }
     }
 }

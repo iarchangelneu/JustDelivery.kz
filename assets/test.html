@@ -11,13 +11,12 @@
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=e1123dd2-7120-43ba-a123-575d432f9366"
         type="text/javascript"></script>
     <script src="https://yandex.st/jquery/2.2.3/jquery.min.js" type="text/javascript"></script>
-    <script src="./js/route_panel_control.js" type="text/javascript"></script>
     <style>
         html,
         body,
         #map {
             width: 100%;
-            height: 100%;
+            height: 400px;
             padding: 0;
             margin: 0;
         }
@@ -25,7 +24,70 @@
 </head>
 
 <body>
+    <div>
+        <label for="address1">Адрес 1:</label>
+        <input type="text" id="address1" />
+        <div id="suggestions1"></div>
+    </div>
+    <div>
+        <label for="address2">Адрес 2:</label>
+        <input type="text" id="address2" />
+        <div id="suggestions2"></div>
+    </div>
+    <button onclick="calculateRoute()">Построить маршрут</button>
+    <div id="result"></div>
     <div id="map"></div>
+
+    <script>
+        ymaps.ready(init);
+
+        function init() {
+            var map = new ymaps.Map('map', {
+                center: [55.751574, 37.573856],
+                zoom: 10,
+                controls: []
+            });
+
+            var address1Input = document.getElementById('address1');
+            var address2Input = document.getElementById('address2');
+            var resultContainer = document.getElementById('result');
+
+            var suggestView1 = new ymaps.SuggestView('address1', { boundedBy: map.getBounds() });
+            var suggestView2 = new ymaps.SuggestView('address2', { boundedBy: map.getBounds() });
+
+            var route;
+
+            function calculateRoute() {
+                var address1 = address1Input.value;
+                var address2 = address2Input.value;
+
+                if (address1 && address2) {
+                    ymaps.route([address1, address2])
+                        .then(function (res) {
+                            if (route) {
+                                map.geoObjects.remove(route);
+                            }
+
+                            route = res;
+
+                            var distance = route.getLength();
+                            resultContainer.textContent = 'Расстояние между точками: ' + distance + ' метров';
+
+                            map.geoObjects.add(route);
+                            map.setBounds(route.getWayPoints().getBounds(), { padding: [50, 50, 50, 50] });
+                        })
+                        .catch(function (error) {
+                            resultContainer.textContent = 'Ошибка при построении маршрута: ' + error.message;
+                        });
+                } else {
+                    resultContainer.textContent = 'Введите оба адреса';
+                    map.geoObjects.removeAll();
+                }
+            }
+
+            window.calculateRoute = calculateRoute;
+        }
+    </script>
 </body>
 
 </html>

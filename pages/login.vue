@@ -10,21 +10,21 @@
                         <div class="form-group">
 
                             <label for="email">Ваш email</label>
-                            <input type="text" class="form-control" id="email" placeholder="Введите адрес электронной почты"
-                                required>
+                            <input v-model="email" type="email" class="form-control" id="email"
+                                placeholder="Введите адрес электронной почты" required>
 
                         </div>
 
                         <div class="form-group">
 
                             <label for="password">Ваш пароль</label>
-                            <input type="text" class="form-control" id="password"
-                                placeholder="Введите пароль (минимум 6 символов)" required>
+                            <input type="password" class="form-control" id="password"
+                                placeholder="Введите пароль (минимум 6 символов)" v-model="password" required>
 
                         </div>
 
                         <div class="text-center">
-                            <button>Войти</button>
+                            <button @click="login()">Войти</button>
                         </div>
                     </div>
                 </div>
@@ -33,6 +33,50 @@
         </div>
     </div>
 </template>
+<script>
+import global from '~/mixins/global';
+
+import axios from 'axios'
+export default {
+    mixins: [global],
+    data() {
+        return {
+            email: '',
+            password: '',
+        }
+    },
+    methods: {
+        login() {
+            const path = "https://justdelivery.kz/api/login";
+            if (this.email != '' && this.password != '') {
+                axios
+                    .post(path, { email: this.email, password: this.password })
+
+                    .then((res) => {
+
+                        if (res.data.success == false) {
+                            alert("Логин или пароль неверны")
+                        }
+                        else {
+                            localStorage.setItem("token", res.data.jwt_token);
+                            localStorage.setItem("isLogin", true);
+                            window.location = "/profile"
+                            console.log(res)
+                        }
+
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        alert('Ошибка')
+                    });
+            }
+            else {
+                alert('Заполните пустые поля')
+            }
+        }
+    }
+}
+</script>
 <script setup>
 useSeoMeta({
     title: 'JustDelivery | Авторизация',
