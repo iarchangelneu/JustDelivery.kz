@@ -8,7 +8,9 @@
                 <img src="@/assets/img/mobmain.png" class="img-fluid mobmain" alt="">
 
                 <div class="d-flex justify-content-end">
-                    <button>РАСЧИТАТЬ СТОИМОСТЬ</button>
+                    <a href="#order">
+                        <button>РАСЧИТАТЬ СТОИМОСТЬ</button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -181,7 +183,9 @@
 
             </div>
             <div class="text-center">
-                <button>РАССЧИТАТЬ СТОИМОСТЬ</button>
+                <a href="#order">
+                    <button>РАССЧИТАТЬ СТОИМОСТЬ</button>
+                </a>
             </div>
         </div>
         <a name="faq"></a>
@@ -516,6 +520,12 @@ const detailedControls = { zoomControl: { position: { right: 10, top: 50 } } };
     font-size: 48px;
     line-height: 106%;
     color: #000;
+    transition: all .3s ease;
+}
+
+.waytoway button:hover {
+    background: #000;
+    color: #fff;
 }
 
 .upperblockimg {
