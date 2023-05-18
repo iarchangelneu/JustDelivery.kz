@@ -13,8 +13,9 @@
                     </a>
                 </div>
             </div>
+            <a name='order'></a>
         </div>
-        <a name='order'></a>
+
         <TheMap></TheMap>
 
         <div class="plusi">
