@@ -91,6 +91,7 @@
     <TheModalReg></TheModalReg>
 </template>
 <script>
+import jwt_decode from "jwt-decode";
 import global from '~/mixins/global';
 import axios from 'axios'
 import { makeMap } from '@vue/shared';
@@ -133,16 +134,17 @@ export default {
     },
     methods: {
         sendOrder() {
-            const path = "https://justdelivery.kz/api/order";
+            const token = jwt_decode(this.token);
+            const path = "https://justdelivery.kz/api/vision_pay";
             if (this.price != '') {
                 axios
-                    .post(path, { price: this.price, adressA: this.adressA, adressB: this.adressB, comment: this.comment })
+                    .post(path, { cost: this.price, jwt_token: this.token })
 
                     .then((res) => {
 
-                        console.log('Заказ успешно оформлен, переходим к оплате')
+                        console.log(res)
 
-                        // Филисимо, ты мне  нужен
+                        window.location.href = res.data.url
 
                     })
                     .catch((error) => {
