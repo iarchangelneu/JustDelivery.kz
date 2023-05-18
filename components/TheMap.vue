@@ -76,7 +76,7 @@
 
         <div class="order__total d-flex justify-content-center mt-5">
             <div>
-                <h2 class="mb-4">Стоимость заказа: {{ price + " ₸" }}</h2>
+                <h2 class="mb-4">Стоимость заказа: {{ Math.floor(price) + " ₸" }}</h2>
                 <h2>Примерное время доставки: ~30 минут
                 </h2>
 
