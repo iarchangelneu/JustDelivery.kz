@@ -105,7 +105,6 @@ export default {
             adressB: '',
             orderType: '',
             price: '',
-            orderType: '',
             weight: null,
             shirina: null,
             visota: null,
@@ -136,6 +135,7 @@ export default {
         sendOrder() {
             const token = jwt_decode(this.token);
             const path = "https://justdelivery.kz/api/vision_pay";
+            const order = 'https://justdelivery.kz/api/add_order'
             if (this.price != '') {
                 axios
                     .post(path, { cost: this.price, jwt_token: token })
@@ -145,6 +145,16 @@ export default {
                         console.log(res)
 
                         window.location.href = res.data.url
+
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+
+                axios
+                    .post(path, { address_from: this.adressA, address_to: this.adressB, delivery_type: this.orderType, comment: this.comment, cost: this.price, delivery_time: 30 })
+
+                    .then((res) => {
 
                     })
                     .catch((error) => {
