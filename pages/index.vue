@@ -818,6 +818,7 @@ input::-webkit-inner-spin-button {
     padding: 19px 32px;
     margin-top: 66px;
 
+    font-family: var(--jur);
     font-weight: 700;
     font-size: 2.5vw;
     line-height: 106%;
@@ -826,8 +827,8 @@ input::-webkit-inner-spin-button {
 }
 
 .main__body button:hover {
-    border: 3px solid #000;
-    background: #000;
+    background: #fff;
+    color: #000;
 }
 
 @media (max-width: 1450px) {
