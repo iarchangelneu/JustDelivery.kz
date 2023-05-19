@@ -17,8 +17,8 @@
                     {{ userName }}
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="/profile">Личный кабинет</a>
-                    <a class="dropdown-item" @click="logOut()">Выход</a>
+                    <NuxtLink class="dropdown-item" to="/profile">Личный кабинет</NuxtLink>
+                    <NuxtLink class="dropdown-item" @click="logOut()" style="cursor: pointer;">Выход</NuxtLink>
                 </div>
             </div>
 
@@ -34,9 +34,9 @@
         </div>
         <div class="mobile__header">
             <div class="d-flex justify-content-between align-items-center pb-3">
-                <NuxtLink to="/">
+                <a href="/">
                     <img src="@/assets/img/logomob.svg" class="pt-4" alt="">
-                </NuxtLink>
+                </a>
 
                 <div>
                     <input id="menu__toggle" type="checkbox" />
@@ -46,14 +46,15 @@
                     <ul class="menu__box">
 
                         <div class="">
+
                             <div class="menu__links" v-if="isAuth == 'true'">
-                                <NuxtLink to="/login">ВОЙТИ</NuxtLink>
-                                <NuxtLink to="/register">РЕГИСТРАЦИЯ</NuxtLink>
-                            </div>
-                            <div class="menu__links" v-else>
                                 <h1>{{ userName }}</h1>
                                 <NuxtLink to="/profile" style="font-size: 16px;">Личный кабинет</NuxtLink>
-                                <a @click="logOut()" class="mt-3" style="font-size: 16px;">Выйти</a>
+                                <a @click="logOut()" class="mt-3" style="font-size: 16px; cursor: pointer;">Выйти</a>
+                            </div>
+                            <div class="menu__links" v-else>
+                                <NuxtLink to="/login">ВОЙТИ</NuxtLink>
+                                <NuxtLink to="/register">РЕГИСТРАЦИЯ</NuxtLink>
                             </div>
                         </div>
                         <div class="menu__contacts">
@@ -80,7 +81,8 @@ export default {
     methods: {
         logOut() {
             localStorage.setItem('isLogin', false)
-            window.location.href = '/'
+            localStorage.setItem('token', '')
+            window.location.href = '/login'
         }
     }
 }

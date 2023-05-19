@@ -104,7 +104,7 @@ export default {
             adressA: '',
             adressB: '',
             orderType: '',
-            price: '',
+            price: null,
             weight: null,
             shirina: null,
             visota: null,
@@ -125,20 +125,20 @@ export default {
         };
         await loadYmap(settings);
         ymaps.ready(this.init);
-        this.emitDistance();
-
+        localStorage.setItem('address1', '')
+        localStorage.setItem('address2', '')
         this.getDist()
+        this.getAddress()
 
 
     },
     methods: {
         sendOrder() {
-            const token = jwt_decode(this.token);
             const path = "https://justdelivery.kz/api/vision_pay";
-            const order = 'https://justdelivery.kz/api/add_order'
+            const order = "https://justdelivery.kz/api/add_order";
             if (this.price != '') {
                 axios
-                    .post(path, { cost: this.price, jwt_token: token })
+                    .post(path, { cost: this.price, jwt_token: this.token })
 
                     .then((res) => {
 
@@ -152,7 +152,7 @@ export default {
                     });
 
                 axios
-                    .post(order, { address_from: this.adressA, address_to: this.adressB, delivery_type: this.orderType, comment: this.comment, cost: this.price, delivery_time: 30 })
+                    .post(order, { address_from: this.adressA, address_to: this.adressB, delivery_type: this.orderType, comment: this.comment, cost: this.price, delivery_time: '30', customer_email: this.userEmail })
 
                     .then((result) => {
 
@@ -169,6 +169,13 @@ export default {
             setInterval(() => {
                 this.distanceNew = localStorage.getItem('distance')
             }, 100);
+        },
+        getAddress() {
+            setInterval(() => {
+                this.adressA = localStorage.getItem('address1')
+                this.adressB = localStorage.getItem('address2')
+            }, 100);
+
         },
         getPrice() {
             if (this.isAuth == 'true') {
@@ -233,14 +240,7 @@ export default {
                 $('#regModal').modal('show')
             }
         },
-        emitDistance() {
-            setInterval(() => {
-                this.$emit('distance', this.distance)
-                this.$emit('adress1', this.adressA)
-                this.$emit('adress2', this.adressB)
-            }, 100);
 
-        },
         init() {
             var map;
             var address1Input = document.getElementById('address1');
@@ -302,6 +302,28 @@ export default {
                     zoom: 10,
                     controls: []
                 });
+                map.events.add('click', function (e) {
+                    var coords = e.get('coords');
+                    ymaps.geocode(coords)
+                        .then(function (res) {
+                            var address = res.geoObjects.get(0).getAddressLine();
+                            if (!address1Input.value) {
+
+                                address1Input.value = address;
+                                localStorage.setItem('address1', address1Input.value)
+                            } else if (!address2Input.value) {
+                                address2Input.value = address;
+                                localStorage.setItem('address2', address2Input.value)
+                            } else {
+                                address1Input.value = address;
+                                address2Input.value = '';
+                            }
+                            calculateRoute();
+                        })
+                        .catch(function (error) {
+                            console.error('Ошибка при определении адреса: ' + error);
+                        });
+                });
             }
 
             function handleGeolocationSuccess(position) {
@@ -331,7 +353,8 @@ export default {
 
             address1Input.addEventListener('input', handleInput);
             address2Input.addEventListener('input', handleInput);
-        }
+        },
+
     }
 }
 </script>

@@ -16,8 +16,12 @@ export default{
             var decoded = jwt_decode(this.token);
             
             this.userEmail = decoded.email
-            this.userName = decoded.email
+            this.userName = decoded.name
         }
 
+    },
+    created(){
+       
+        
     }
 }

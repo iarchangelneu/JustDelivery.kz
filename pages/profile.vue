@@ -7,15 +7,12 @@
             <div class="acc">
                 <div class="d-flex align-items-center mb-3">
                     <p class="mb-0">Email:</p>
-                    <span>&nbsp;alexivanov@gmail.com</span>
+                    <span>&nbsp;{{ userEmail }}</span>
                 </div>
-                <div class="d-flex align-items-center">
-                    <p class="mb-0">Номер телефона:</p>
-                    <span>&nbsp;Нет</span>
-                </div>
+
             </div>
             <div class="name">
-                <h2 class="mb-0 mt-0">Александр Иванов</h2>
+                <h2 class="mb-0 mt-0">{{ userName }}</h2>
             </div>
         </div>
 
@@ -36,101 +33,70 @@
             <div class="orders__body">
                 <transition name='fade'>
                     <div class="active__orders" v-if="block1Visible">
-                        <div class="order__body">
+                        <div class="order__body" v-for="(order, index) in orders.data" :key="order.order_id"
+                            v-show="order.archived == 0">
+
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex">
-                                    <small>1.</small>
+                                    <small>{{ index + 1 }}.</small>
                                     <div>
                                         <div class="d-flex align-items-center">
                                             <img src="@/assets/img/pointA.svg" alt="">
-                                            <span>Улица Розыбакиева, 92</span>
+                                            <span>{{ order.address_from }}</span>
                                         </div>
                                         <div class="d-flex align-items-center mt-4">
                                             <img src="@/assets/img/pointB.svg" alt="">
-                                            <span>Улица Жумалиева, 159</span>
+                                            <span>{{ order.address_to }}</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <p class="mb-0">24.04.2023</p>
-                                    <p class="mb-0">15:20:38</p>
+                                    <p class="mb-0">{{ order.created_at }}</p>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-between align-items-center mt-5">
+                            <div class="d-flex justify-content-between align-items-end mt-5">
 
-                                <div v-if="!timerStopped" class="d-flex align-items-center ml-3">
+                                <div v-if="!timerStopped" class="d-flex align-items-center ml-3 mb-3">
                                     <small>&nbsp;</small>
                                     <img src="@/assets/img/timer.svg" alt="">
                                     <span>Поиск курьера (0:{{ timeLeft }})</span>
                                 </div>
-                                <div v-else class="d-flex align-items-center ml-3">
+                                <div v-else class="d-flex align-items-center ml-3 mb-3">
                                     <small>&nbsp;</small>
                                     <img src="@/assets/img/kur.svg" alt="">
                                     <span>Курьер в пути к отправителю</span>
                                 </div>
 
                                 <div class="price">
-                                    1880 ₸
+                                    {{ Math.floor(order.cost) }} ₸
+                                    <button @click="cancelOrder(order.order_id)">ОТМЕНИТЬ ЗАКАЗ</button>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </transition>
 
                 <transition name="fade">
                     <div class="active__orders" v-if="block2Visible">
-                        <div class="order__body">
+                        <div class="order__body" v-for="(order, index) in orders.data" :key="order.order_id"
+                            v-show="order.archived == 1">
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex">
-                                    <small>1.</small>
+                                    <small>{{ index + 1 }}.</small>
                                     <div>
                                         <div class="d-flex align-items-center">
                                             <img src="@/assets/img/pointA.svg" alt="">
-                                            <span>Улица Розыбакиева, 92</span>
+                                            <span>{{ order.address_from }}</span>
                                         </div>
                                         <div class="d-flex align-items-center mt-4">
                                             <img src="@/assets/img/pointB.svg" alt="">
-                                            <span>Улица Жумалиева, 159</span>
+                                            <span>{{ order.address_to }}</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <p class="mb-0">24.04.2023</p>
-                                    <p class="mb-0">15:20:38</p>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center mt-5">
-
-                                <div class="d-flex align-items-center ml-3">
-                                    <small>&nbsp;</small>
-                                    <img src="@/assets/img/comp.svg" alt="">
-                                    <span class="complete">Заказ завершён</span>
-                                </div>
-
-
-                                <div class="price">
-                                    1880 ₸
-                                </div>
-                            </div>
-                        </div>
-                        <div class="order__body">
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex">
-                                    <small>2.</small>
-                                    <div>
-                                        <div class="d-flex align-items-center">
-                                            <img src="@/assets/img/pointA.svg" alt="">
-                                            <span>Улица Розыбакиева, 92</span>
-                                        </div>
-                                        <div class="d-flex align-items-center mt-4">
-                                            <img src="@/assets/img/pointB.svg" alt="">
-                                            <span>Улица Жумалиева, 159</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <p class="mb-0">24.04.2023</p>
-                                    <p class="mb-0">15:20:38</p>
+                                    <p class="mb-0">{{ order.created_at }}</p>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-between align-items-center mt-5">
@@ -138,12 +104,12 @@
                                 <div class="d-flex align-items-center ml-3">
                                     <small>&nbsp;</small>
                                     <img src="@/assets/img/canc.svg" alt="">
-                                    <span class="cancel">Заказ отменён</span>
+                                    <span class="cancel">Заказ Отменен</span>
                                 </div>
 
 
                                 <div class="price">
-                                    1880 ₸
+                                    {{ order.cost }} ₸
                                 </div>
                             </div>
                         </div>
@@ -161,16 +127,17 @@
                     <img src="@/assets/img/arrowlc.svg" id="faqbtn0" class="ml-2" alt="">
                 </a>
                 <div class="collapse" id="collapse0">
-                    <div class="card card-body">
-                        <span class="mb-4 mt-4">24.04.2023 15:20:38</span>
+                    <div class="card card-body" v-for="order in orders.data" :key="order.order_id"
+                        v-show="order.archived == 0">
+                        <span class="mb-4 mt-4">{{ order.created_at }}</span>
 
                         <div class="d-flex align-items-center mb-4">
                             <img src="@/assets/img/pointA.svg" alt="">
-                            <p class="mb-0 ml-3">Улица Розыбакиева, 92</p>
+                            <p class="mb-0 ml-3">{{ order.address_from }}</p>
                         </div>
                         <div class="d-flex align-items-center mb-4">
                             <img src="@/assets/img/pointA.svg" alt="">
-                            <p class="mb-0 ml-3">Улица Розыбакиева, 92</p>
+                            <p class="mb-0 ml-3">{{ order.address_to }}</p>
                         </div>
                         <div v-if="!timerStopped" class="d-flex align-items-center">
                             <img src="@/assets/img/timer.svg" alt="">
@@ -180,8 +147,9 @@
                             <img src="@/assets/img/kur.svg" alt="">
                             <span class="ml-3">Курьер в пути к отправителю</span>
                         </div>
-                        <div class="d-flex justify-content-end mt-4">
-                            <small>1880 ₸</small>
+                        <div class="d-flex justify-content-end mt-4 price">
+                            <small>{{ order.cost }} ₸</small>
+                            <button @click="cancelOrder(order.order_id)">ОТМЕНИТЬ ЗАКАЗ</button>
                         </div>
                         <hr>
                     </div>
@@ -195,50 +163,27 @@
                     <img src="@/assets/img/arrowlc.svg" id="faqbtn1" class="ml-2" alt="">
                 </a>
                 <div class="collapse" id="collapse1">
-                    <div class="card card-body">
-                        <div class="card card-body">
-                            <span class="mb-4 mt-4">24.04.2023 15:20:38</span>
+                    <div class="card card-body" v-for="(order, index) in orders.data" :key="order.order_id"
+                        v-show="order.archived == 1">
 
-                            <div class="d-flex align-items-center mb-4">
-                                <img src="@/assets/img/pointA.svg" alt="">
-                                <p class="mb-0 ml-3">Улица Розыбакиева, 92</p>
-                            </div>
-                            <div class="d-flex align-items-center mb-4">
-                                <img src="@/assets/img/pointA.svg" alt="">
-                                <p class="mb-0 ml-3">Улица Розыбакиева, 92</p>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <img src="@/assets/img/comp.svg" alt="">
-                                <p class="complete ml-4 mb-0">Заказ завершён</p>
-                            </div>
-                            <div class="d-flex justify-content-end mt-4">
-                                <small>1880 ₸</small>
-                            </div>
-                            <hr>
+                        <span class="mb-4 mt-4">{{ order.created_at }}</span>
+
+                        <div class="d-flex align-items-center mb-4">
+                            <img src="@/assets/img/pointA.svg" alt="">
+                            <p class="mb-0 ml-3">{{ order.address_from }}</p>
                         </div>
-                    </div>
-
-                    <div class="card card-body">
-                        <div class="card card-body">
-                            <span class="mb-4 mt-4">24.04.2023 15:20:38</span>
-
-                            <div class="d-flex align-items-center mb-4">
-                                <img src="@/assets/img/pointA.svg" alt="">
-                                <p class="mb-0 ml-3">Улица Розыбакиева, 92</p>
-                            </div>
-                            <div class="d-flex align-items-center mb-4">
-                                <img src="@/assets/img/pointA.svg" alt="">
-                                <p class="mb-0 ml-3">Улица Розыбакиева, 92</p>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <img src="@/assets/img/canc.svg" alt="">
-                                <p class="cancel ml-4 mb-0">Заказ отменен</p>
-                            </div>
-                            <div class="d-flex justify-content-end mt-4">
-                                <small>1880 ₸</small>
-                            </div>
-                            <hr>
+                        <div class="d-flex align-items-center mb-4">
+                            <img src="@/assets/img/pointA.svg" alt="">
+                            <p class="mb-0 ml-3">{{ order.address_to }}</p>
                         </div>
+                        <div class="d-flex align-items-center">
+                            <img src="@/assets/img/canc.svg" alt="">
+                            <p class="cancel ml-4 mb-0">Заказ отменен</p>
+                        </div>
+                        <div class="d-flex justify-content-end mt-4">
+                            <small>{{ order.cost }} ₸</small>
+                        </div>
+                        <hr>
                     </div>
                 </div>
             </div>
@@ -247,6 +192,7 @@
     </div>
 </template>
 <script>
+import axios from 'axios';
 import global from '~/mixins/global';
 export default {
     mixins: [global],
@@ -257,9 +203,12 @@ export default {
             timerStopped: false,
             timeLeft: 0,
             timer: null,
+            orders: [],
         }
     },
+
     methods: {
+
         showBlock1() {
             if (!this.block1Visible) {
                 this.block1Visible = true;
@@ -272,8 +221,42 @@ export default {
                 this.block2Visible = true;
             }
         },
+        getOrder() {
+            const path = "https://justdelivery.kz/api/user_orders";
+
+            axios
+                .post(path, { email: this.userEmail })
+
+                .then((res) => {
+                    this.orders = res
+                    console.log(res)
+
+                })
+                .catch((error) => {
+                    console.error(error);
+                    alert('Ошибка')
+                });
+        },
+        cancelOrder(order) {
+            const path = "https://justdelivery.kz/api/archive_order";
+
+            axios
+                .post(path, { order_id: order })
+
+                .then((res) => {
+                    if (res.data == 'Success') {
+                        this.getOrder()
+                    }
+
+                })
+                .catch((error) => {
+                    console.error(error);
+                    alert('Ошибка')
+                });
+        },
     },
     mounted() {
+        this.getOrder()
         if (this.isAuth == 'false') {
             window.location.href = '/register'
         }
@@ -425,6 +408,29 @@ useSeoMeta({
     font-size: 48px;
     line-height: 130%;
     color: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: right;
+}
+
+.price button {
+    font-family: var(--jur);
+    padding: 11px 29px;
+    background: transparent;
+    border: 3px solid #000000;
+
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 106%;
+    color: #000;
+    margin-top: 20px;
+    transition: all .3s ease;
+}
+
+.price button:hover {
+    background: #000;
+    color: #fff;
 }
 
 .order__body p {
@@ -464,7 +470,6 @@ useSeoMeta({
 
 .order__body {
     padding: 45px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, .3);
 }
 
 .underline {
@@ -558,6 +563,10 @@ useSeoMeta({
 }
 
 @media (max-width: 1023px) {
+    .price button {
+        font-size: 20px;
+    }
+
     .profile {
         padding: 12.813vw 60px 3.438vw;
     }
