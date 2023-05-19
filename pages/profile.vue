@@ -496,9 +496,10 @@ useSeoMeta({
 
 .order__body {
     padding: 45px 0;
+    border-bottom: 1px solid #000000;
 }
 
-.underline {
+.order__body:LAST .underline {
     position: absolute;
     bottom: -1%;
     left: 0;
