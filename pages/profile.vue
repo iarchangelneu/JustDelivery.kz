@@ -33,12 +33,12 @@
             <div class="orders__body">
                 <transition name='fade'>
                     <div class="active__orders" v-if="block1Visible">
-                        <div class="order__body" v-for="(order, index) in orders.data" :key="order.order_id"
+                        <div class="order__body" v-for="(order, index) in orders" :key="order.order_id"
                             v-show="order.archived == 0">
 
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex">
-                                    <small>{{ index + 1 }}.</small>
+                                    <small> {{ index }}.</small>
                                     <div>
                                         <div class="d-flex align-items-center">
                                             <img src="@/assets/img/pointA.svg" alt="">
@@ -79,7 +79,7 @@
 
                 <transition name="fade">
                     <div class="active__orders" v-if="block2Visible">
-                        <div class="order__body" v-for="(order, index) in orders.data" :key="order.order_id"
+                        <div class="order__body" v-for="(order, index) in orders" :key="order.order_id"
                             v-show="order.archived == 1">
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex">
@@ -127,8 +127,7 @@
                     <img src="@/assets/img/arrowlc.svg" id="faqbtn0" class="ml-2" alt="">
                 </a>
                 <div class="collapse" id="collapse0">
-                    <div class="card card-body" v-for="order in orders.data" :key="order.order_id"
-                        v-show="order.archived == 0">
+                    <div class="card card-body" v-for="order in orders" :key="order.order_id" v-show="order.archived == 0">
                         <span class="mb-4 mt-4">{{ order.created_at }}</span>
 
                         <div class="d-flex align-items-center mb-4">
@@ -163,7 +162,7 @@
                     <img src="@/assets/img/arrowlc.svg" id="faqbtn1" class="ml-2" alt="">
                 </a>
                 <div class="collapse" id="collapse1">
-                    <div class="card card-body" v-for="(order, index) in orders.data" :key="order.order_id"
+                    <div class="card card-body" v-for="(order, index) in orders" :key="order.order_id"
                         v-show="order.archived == 1">
 
                         <span class="mb-4 mt-4">{{ order.created_at }}</span>
@@ -204,6 +203,32 @@ export default {
             timeLeft: 0,
             timer: null,
             orders: [],
+            counter: 0,
+        }
+    },
+    computed: {
+        indexedOrders() {
+            let index = 1;
+            const indexedOrders = {
+                archived1: [],
+                archived0: []
+            };
+
+            this.orders.forEach((order) => {
+                if (order.archived === 1) {
+                    indexedOrders.archived1.push({
+                        ...order,
+                        index: index++
+                    });
+                } else if (order.archived === 0) {
+                    indexedOrders.archived0.push({
+                        ...order,
+                        index: index++
+                    });
+                }
+            });
+
+            return indexedOrders;
         }
     },
 
@@ -228,7 +253,7 @@ export default {
                 .post(path, { email: this.userEmail })
 
                 .then((res) => {
-                    this.orders = res
+                    this.orders = res.data
                     console.log(res)
 
                 })
@@ -256,6 +281,7 @@ export default {
         },
     },
     mounted() {
+        console.log(this.filteredOrders)
         this.getOrder()
         if (this.isAuth == 'false') {
             window.location.href = '/register'
