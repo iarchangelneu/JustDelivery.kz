@@ -38,7 +38,7 @@
 
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex">
-                                    <small> {{ index }}.</small>
+                                    <!-- <small> {{ index }}.</small> -->
                                     <div>
                                         <div class="d-flex align-items-center">
                                             <img src="@/assets/img/pointA.svg" alt="">
@@ -83,7 +83,7 @@
                             v-show="order.archived == 1">
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex">
-                                    <small>{{ index + 1 }}.</small>
+                                    <!-- <small>{{ index + 1 }}.</small> -->
                                     <div>
                                         <div class="d-flex align-items-center">
                                             <img src="@/assets/img/pointA.svg" alt="">
