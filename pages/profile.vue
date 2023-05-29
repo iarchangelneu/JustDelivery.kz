@@ -317,6 +317,7 @@ export default {
         setTimeout(() => {
             clearInterval(this.timer);
             this.timerStopped = true;
+            console.log(order.order_id)
         }, stopTime);
     },
 }

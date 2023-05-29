@@ -290,6 +290,11 @@ export default {
                     resultContainer.textContent = 'Введите оба адреса';
                     map.geoObjects.removeAll();
                 }
+                setInterval(() => {
+                    localStorage.setItem('address1', address1Input.value);
+                    localStorage.setItem('address2', address2Input.value);
+                }, 1);
+
 
             }
             function handleInput() {
@@ -500,8 +505,7 @@ input::-webkit-inner-spin-button {
 
 @media (max-width: 1023px) {
 
-    #map[data-v-6afeeec8],
-    .ymaps-2-1-79-map[data-v-6afeeec8] {
+    #map {
         width: 100%;
         height: 678px;
     }
@@ -549,8 +553,7 @@ input::-webkit-inner-spin-button {
 
 @media (max-width: 768px) {
 
-    #map[data-v-6afeeec8][data-v-6afeeec8],
-    .ymaps-2-1-79-map[data-v-6afeeec8][data-v-6afeeec8] {
+    #map {
         width: 100%;
         height: 350px;
     }

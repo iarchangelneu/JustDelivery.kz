@@ -23,6 +23,17 @@ export default defineNuxtConfig({
             {
               src: 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js'
             },
+            {
+              src: '//code.jivo.ru/widget/CI29dONDeP',
+              async: true,
+            },
+            {
+              src: 'https://www.googletagmanager.com/gtag/js?id=G-5V6JEG8BFL',
+              async: true,
+            },
+            {
+              src: 'js/analytics.js'
+            }
             // {
             //   src: 'https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=e1123dd2-7120-43ba-a123-575d432f9366'
             // },

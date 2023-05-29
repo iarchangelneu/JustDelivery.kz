@@ -86,6 +86,15 @@ useSeoMeta({
 })
 </script>
 <style scoped>
+label {
+    font-family: var(--jur);
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    color: #000;
+}
+
 .form button {
     background: transparent;
     padding: 15px 72px;

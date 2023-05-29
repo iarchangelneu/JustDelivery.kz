@@ -40,7 +40,9 @@
 
             </div>
             <div class="text-center">
-                <button>РАССЧИТАТЬ СТОИМОСТЬ</button>
+                <a href="/#order">
+                    <button>РАССЧИТАТЬ СТОИМОСТЬ</button>
+                </a>
             </div>
         </div>
     </div>
